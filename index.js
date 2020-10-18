@@ -1,10 +1,14 @@
 const http = require("http");
+const products = require("./data/products");
 
 server = http.createServer((req, res) => {
-    res.statusCode = 400;
-    res.setHeader('Content-Type','text/html');
-    res.write('<h1>Thank you, Next</h1>');
-    res.end();
+  if (req.url === "/api/products" && req.method === 'GET') {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(products));
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Route Not Found" }));
+  }
 });
 
 const PORT = process.env.PORT || 5000;
