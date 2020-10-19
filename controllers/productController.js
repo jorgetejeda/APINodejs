@@ -78,6 +78,8 @@ async function updateProduct(req, res, id) {
   }
 }
 
+// @desc    Delete a Product
+// @route   DELETE /api/products/:id
 async function deleteProduct(req, res, id) {
     const product = await Product.findById(id);
     if(!product){
