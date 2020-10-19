@@ -22,11 +22,11 @@ function getPostData(req) {
         resolve(body);
       });
     } catch (error) {
-      console.log(error.message);
+      reject(error);
     }
   });
 }
 module.exports = {
   writeDataToFile,
-  getPostData
+  getPostData,
 };
