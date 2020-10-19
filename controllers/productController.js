@@ -1,6 +1,6 @@
 const Product = require("../models/productModel");
 
-// @desc    Gets All Produtcs
+// @desc    Gets All Products
 // @route   GET /api/products
 async function getProducts(req, res) {
   try {
@@ -12,7 +12,7 @@ async function getProducts(req, res) {
   }
 }
 
-// @desc    Get single Produtc
+// @desc    Get single Product
 // @route   GET /api/product/:id
 async function getProduct(req, res, id) {
   try {
@@ -29,7 +29,26 @@ async function getProduct(req, res, id) {
   }
 }
 
+// @desc    Creat a Product
+// @route   POST /api/products
+async function createProduct(req, res) {
+  try {
+    const product = {
+      name: "Test Product",
+      description: "This is my product",
+      price: 100,
+    };
+
+    const newProduct = await Product.create(product);
+    res.writeHead(201, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify(newProduct));
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   getProducts,
   getProduct,
+  createProduct,
 };
