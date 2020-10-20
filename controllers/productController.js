@@ -1,3 +1,5 @@
+const EventEmitter = require("events");
+const emitter = new EventEmitter();
 const Product = require("../models/productModel");
 const { getPostData } = require("../utils");
 
@@ -8,6 +10,7 @@ async function getProducts(req, res) {
     const products = await Product.findAll();
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(products));
+    emitter.emit("GET_PRODUCT"); //trigger middleware
   } catch (error) {
     console.log(error.message);
   }
@@ -39,7 +42,7 @@ async function createProduct(req, res) {
     const product = {
       name,
       description,
-      price,
+      price
     };
 
     const newProduct = await Product.create(product);
@@ -68,7 +71,7 @@ async function updateProduct(req, res, id) {
     const productData = {
       name: name || product.name,
       description: description || product.description,
-      price: price || product.price,
+      price: price || product.price
     };
 
     const updateProduct = await Product.update(productData, id);
@@ -81,15 +84,15 @@ async function updateProduct(req, res, id) {
 // @desc    Delete a Product
 // @route   DELETE /api/products/:id
 async function deleteProduct(req, res, id) {
-    const product = await Product.findById(id);
-    if(!product){
-        res.writeHead(404, {'Content-Type':'application/json'});
-        res.end(JSON.stringify({message:'Product Not Found'}));
-    }else{
-        const deleteProduct = await Product.deleteById(id);
-        res.writeHead(200, {'Content-Type':'application/json'});
-        res.end(JSON.stringify(deleteProduct));
-    }
+  const product = await Product.findById(id);
+  if (!product) {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Product Not Found" }));
+  } else {
+    const deleteProduct = await Product.deleteById(id);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(deleteProduct));
+  }
 }
 
 module.exports = {
@@ -97,5 +100,5 @@ module.exports = {
   getProduct,
   createProduct,
   updateProduct,
-  deleteProduct,
+  deleteProduct
 };

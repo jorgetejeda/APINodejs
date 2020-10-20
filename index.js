@@ -1,4 +1,7 @@
 const http = require("http");
+const EventEmitter = require("events");
+const emitter = new EventEmitter();
+
 const {
   getProducts,
   getProduct,
@@ -7,7 +10,11 @@ const {
   deleteProduct
 } = require("./controllers/productController");
 
-server = http.createServer((req, res) => {
+emitter.on("GET_PRODUCT", () => {
+  console.log("Se obtuvo el producto");
+});
+
+const server = http.createServer((req, res) => {
   if (req.url === "/api/products" && req.method === "GET") {
     getProducts(req, res);
   } else if (
